@@ -5,6 +5,8 @@ public class MessagePrinter {
 
     // adds an indentation of 4 spaces "    "
     private String addIndentation(String message){
+        // add indentation after every new line too
+        message = message.replace("\n", "\n" + indentation);
         return this.indentation + message;
     }
 
