@@ -14,6 +14,7 @@ public class Minion {
         // Initialise the message inputs and outputs
         MessagePrinter minionOut = new MessagePrinter();
         Scanner in = new Scanner(System.in);
+        TaskList tasks = new TaskList();
 
 
         // Display logo and messages
@@ -21,13 +22,21 @@ public class Minion {
         minionOut.printMessage("Hello! I'm [" + name + "]");
         minionOut.printMessageAndSep("What can I do for you?");
 
+        Boolean toExit = false;
         // Level-1 read back the user's message, unless it is "bye"
-        while (true){
+        while (!toExit){
             userInput = in.nextLine();
-            if (userInput.equals("bye")){
+            switch (userInput){
+            case "bye":
+                toExit = true;
                 break;
+            case "list":
+                minionOut.printMessageAndSep(tasks.listTasks());
+                break;
+            default:
+                tasks.addTask(userInput);
+                minionOut.printMessageAndSep("added: " + userInput);
             }
-            minionOut.printMessageAndSep(userInput);
         }
 
         // Handle final message after "bye" was sent by user
