@@ -24,9 +24,9 @@ public class Minion {
 
         Boolean toExit = false;
         // Level-1 read back the user's message, unless it is "bye"
-        while (!toExit){
+        while (!toExit) {
             userInput = in.nextLine();
-            switch (userInput){
+            switch (userInput) {
             case "bye":
                 toExit = true;
                 break;
@@ -34,8 +34,17 @@ public class Minion {
                 minionOut.printMessageAndSep(tasks.listTasks());
                 break;
             default:
-                tasks.addTask(userInput);
-                minionOut.printMessageAndSep("added: " + userInput);
+                if (userInput.startsWith("mark ")) {
+                    int taskIndex = Integer.parseInt(userInput.substring(5).trim()) - 1;
+                    minionOut.printMessage(tasks.markDone(taskIndex));
+                } else if (userInput.startsWith("unmark ")) {
+                    int taskIndex = Integer.parseInt(userInput.substring(7).trim()) - 1;
+                    minionOut.printMessage(tasks.unmarkDone(taskIndex));
+                } else {
+                    Task newTask = new Task(userInput);
+                    tasks.addTask(newTask);
+                    minionOut.printMessageAndSep("added: " + userInput);
+                }
             }
         }
 
