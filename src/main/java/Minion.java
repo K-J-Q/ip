@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Minion {
+
     public static void main(String[] args) {
         // Constant variables
         String logo = "  __  __ _       _             \n"
@@ -23,7 +24,10 @@ public class Minion {
         minionOut.printMessageAndSep("What can I do for you?");
 
         Boolean toExit = false;
-        // Level-1 read back the user's message, unless it is "bye"
+        Task newTask;
+        String messageOut;
+
+
         while (!toExit) {
             userInput = in.nextLine();
             switch (userInput) {
@@ -33,17 +37,27 @@ public class Minion {
             case "list":
                 minionOut.printMessageAndSep(tasks.listTasks());
                 break;
+
             default:
-                if (userInput.startsWith("mark ")) {
+                if (userInput.startsWith("todo")){
+                    newTask = new Todo(userInput);
+                    messageOut = tasks.addTask(newTask);
+                    minionOut.printMessageAndSep(messageOut);
+                }else if (userInput.startsWith("deadline")){
+                    newTask = new Deadline(userInput);
+                    messageOut = tasks.addTask(newTask);
+                    minionOut.printMessageAndSep(messageOut);
+                }else if (userInput.startsWith("event")){
+                    newTask = new Event(userInput);
+                    messageOut = tasks.addTask(newTask);
+                    minionOut.printMessageAndSep(messageOut);
+                }
+                else if (userInput.startsWith("mark ")) {
                     int taskIndex = Integer.parseInt(userInput.substring(5).trim()) - 1;
                     minionOut.printMessage(tasks.markDone(taskIndex));
                 } else if (userInput.startsWith("unmark ")) {
                     int taskIndex = Integer.parseInt(userInput.substring(7).trim()) - 1;
                     minionOut.printMessage(tasks.unmarkDone(taskIndex));
-                } else {
-                    Task newTask = new Task(userInput);
-                    tasks.addTask(newTask);
-                    minionOut.printMessageAndSep("added: " + userInput);
                 }
             }
         }

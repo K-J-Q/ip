@@ -1,10 +1,6 @@
 public class Task {
-    private String title;
-    private Boolean isDone = false;
-
-    Task(String title) {
-        this.title = title;
-    }
+    protected String title = "";
+    protected Boolean isDone = false;
 
     public Boolean isDone() {
         return isDone;
@@ -17,4 +13,6 @@ public class Task {
     public String getTitle() {
         return title;
     }
+
+    public String getTask() {return String.format("[%c] %s", this.isDone ? 'X' : ' ', this.title);}
 }

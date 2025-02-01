@@ -1,5 +1,5 @@
 public class TaskList {
-    private Task tasks[] = new Task[100]; // maximum of 100 tasks
+    private Task[] tasks = new Task[100]; // maximum of 100 tasks
     private int taskIndex = 0;
 
     private Boolean isValidIndex(int index) {
@@ -9,7 +9,7 @@ public class TaskList {
     public String addTask(Task task) {
         this.tasks[this.taskIndex] = task;
         this.taskIndex++;
-        return String.format("added: %s", task.getTitle());
+        return String.format("Got it. I've added this task:\n  %s\nNow you have %d task(s) in the list.", task.getTask(), this.taskIndex);
     }
 
     public String getTaskString(int index) {
@@ -24,12 +24,11 @@ public class TaskList {
         String out = "Here are the tasks in your list:\n";
         Task task;
         for (int i = 0; i < this.taskIndex; i++) {
-            task = tasks[i];
-            out += String.format("%d. [%c] %s\n", i + 1, task.isDone() ? 'X' : ' ', task.getTitle());
+            out += String.format("%d.%s\n", i + 1, tasks[i].getTask());
         }
 
         // if there are tasks, remove trailing new line
-        if (out.length() != 0) {
+        if (!out.isEmpty()) {
             out = out.substring(0, out.length() - 1);
         } else {
             out = "You don't have any items!";
