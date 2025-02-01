@@ -1,4 +1,4 @@
-public class Todo extends Task{
+public class Todo extends Task {
     Todo(String userInput) {
         userInput = userInput.substring("task".length());
         this.title = userInput.trim();

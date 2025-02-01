@@ -14,5 +14,7 @@ public class Task {
         return title;
     }
 
-    public String getTask() {return String.format("[%c] %s", this.isDone ? 'X' : ' ', this.title);}
+    public String getTask() {
+        return String.format("[%c] %s", this.isDone ? 'X' : ' ', this.title);
+    }
 }

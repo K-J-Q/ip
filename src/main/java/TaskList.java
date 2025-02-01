@@ -27,7 +27,7 @@ public class TaskList {
             out += String.format("%d.%s\n", i + 1, tasks[i].getTask());
         }
 
-        // if there are tasks, remove trailing new line
+        // if there are tasks, remove trailing new line character
         if (!out.isEmpty()) {
             out = out.substring(0, out.length() - 1);
         } else {

@@ -1,37 +1,38 @@
-public class Event extends Task
-{
-    String startDateTime= "";
-    String endDateTime= "";
+public class Event extends Task {
+    String fromDateTime = "";
+    String toDateTime = "";
 
-    Event(String userInput){
+    // Expect user input with three '/'  as separator for from and to
+    Event(String userInput) {
         userInput = userInput.substring("event".length());
         String[] userInputs = userInput.split("/");
-        if (userInputs.length != 3){
+
+        if (userInputs.length != 3) {
             return;
         }
         this.title = userInputs[0];
 
-        for(int i = 1; i < 3; i++){
-            if(userInputs[i].startsWith("from")) {
-                this.startDateTime = userInputs[i].substring(4);
-            } else if (userInputs[i].startsWith("to")){
-                this.endDateTime = userInputs[i].substring(2);
+        for (int i = 1; i < 3; i++) {
+            if (userInputs[i].startsWith("from")) {
+                this.fromDateTime = userInputs[i].substring("from".length());
+            } else if (userInputs[i].startsWith("to")) {
+                this.toDateTime = userInputs[i].substring("to".length());
             }
         }
 
         this.title = this.title.trim();
-        this.startDateTime = this.startDateTime.trim();
-        this.endDateTime = this.endDateTime.trim();
+        this.fromDateTime = this.fromDateTime.trim();
+        this.toDateTime = this.toDateTime.trim();
     }
 
-    Event(String title, String startDateTime, String endDateTime) {
+    Event(String title, String fromDateTime, String toDateTime) {
         this.title = title;
-        this.startDateTime = startDateTime;
-        this.endDateTime= endDateTime;
+        this.fromDateTime = fromDateTime;
+        this.toDateTime = toDateTime;
     }
 
     @Override
     public String getTask() {
-        return String.format("[E][%c] %s (by: %s to: %s)", this.isDone ? 'X' : ' ', this.title, this.startDateTime, this.endDateTime);
+        return String.format("[E][%c] %s (by: %s to: %s)", this.isDone ? 'X' : ' ', this.title, this.fromDateTime, this.toDateTime);
     }
 }

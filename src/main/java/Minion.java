@@ -5,9 +5,9 @@ public class Minion {
     public static void main(String[] args) {
         // Constant variables
         String logo = "  __  __ _       _             \n"
-            + " |  \\/  (_)_ __ (_) ___  _ __  \n"
-            + " | |\\/| | | '_ \\| |/ _ \\| '_ \\ \n"
-            + " | |  | | | | | | | (_) | | | |\n"
+                + " |  \\/  (_)_ __ (_) ___  _ __  \n"
+                + " | |\\/| | | '_ \\| |/ _ \\| '_ \\ \n"
+                + " | |  | | | | | | | (_) | | | |\n"
                 + " |_|  |_|_|_| |_|_|\\___/|_| |_|\n";
         String name = "Minion";
         String userInput;
@@ -27,7 +27,7 @@ public class Minion {
         Task newTask;
         String messageOut;
 
-
+        // Keep reading the user's input until exit condition reached
         while (!toExit) {
             userInput = in.nextLine();
             switch (userInput) {
@@ -37,26 +37,21 @@ public class Minion {
             case "list":
                 minionOut.printMessageAndSep(tasks.listTasks());
                 break;
-
             default:
-                if (userInput.startsWith("todo")){
-                    newTask = new Todo(userInput);
-                    messageOut = tasks.addTask(newTask);
+                if (userInput.startsWith("todo")) {
+                    messageOut = tasks.addTask(new Todo(userInput));
                     minionOut.printMessageAndSep(messageOut);
-                }else if (userInput.startsWith("deadline")){
-                    newTask = new Deadline(userInput);
-                    messageOut = tasks.addTask(newTask);
+                } else if (userInput.startsWith("deadline")) {
+                    messageOut = tasks.addTask(new Deadline(userInput));
                     minionOut.printMessageAndSep(messageOut);
-                }else if (userInput.startsWith("event")){
-                    newTask = new Event(userInput);
-                    messageOut = tasks.addTask(newTask);
+                } else if (userInput.startsWith("event")) {
+                    messageOut = tasks.addTask(new Event(userInput));
                     minionOut.printMessageAndSep(messageOut);
-                }
-                else if (userInput.startsWith("mark ")) {
-                    int taskIndex = Integer.parseInt(userInput.substring(5).trim()) - 1;
+                } else if (userInput.startsWith("mark")) {
+                    int taskIndex = Integer.parseInt(userInput.substring("mark".length()).trim()) - 1;
                     minionOut.printMessage(tasks.markDone(taskIndex));
-                } else if (userInput.startsWith("unmark ")) {
-                    int taskIndex = Integer.parseInt(userInput.substring(7).trim()) - 1;
+                } else if (userInput.startsWith("unmark")) {
+                    int taskIndex = Integer.parseInt(userInput.substring("unmark".length()).trim()) - 1;
                     minionOut.printMessage(tasks.unmarkDone(taskIndex));
                 }
             }
