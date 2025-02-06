@@ -4,12 +4,12 @@ public class Minion {
 
     public static void main(String[] args) {
         // Constant variables
-        String logo = "  __  __ _       _             \n"
+        final String LOGO = "  __  __ _       _             \n"
                 + " |  \\/  (_)_ __ (_) ___  _ __  \n"
                 + " | |\\/| | | '_ \\| |/ _ \\| '_ \\ \n"
                 + " | |  | | | | | | | (_) | | | |\n"
                 + " |_|  |_|_|_| |_|_|\\___/|_| |_|\n";
-        String name = "Minion";
+        final String NAME = "Minion";
         String userInput;
 
         // Initialise the message inputs and outputs
@@ -19,8 +19,8 @@ public class Minion {
 
 
         // Display logo and messages
-        minionOut.printMessageAndSep("Hello from\n" + logo);
-        minionOut.printMessage("Hello! I'm [" + name + "]");
+        minionOut.printMessageAndSep("Hello from\n" + LOGO);
+        minionOut.printMessage("Hello! I'm [" + NAME + "]");
         minionOut.printMessageAndSep("What can I do for you?");
 
         Boolean toExit = false;

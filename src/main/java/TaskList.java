@@ -1,5 +1,6 @@
 public class TaskList {
-    private Task[] tasks = new Task[100]; // maximum of 100 tasks
+    private static final int MAX_TASKS = 100;
+    private Task[] tasks = new Task[MAX_TASKS]; // maximum of 100 tasks
     private int taskIndex = 0;
 
     private Boolean isValidIndex(int index) {
