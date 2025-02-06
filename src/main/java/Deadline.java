@@ -1,17 +1,19 @@
 public class Deadline extends Task {
-    String doneBy = "";
+    private static final String KEYWORD_DEADLINE = "deadline";
+    private static final String KEYWORD_BY = "by";
+    private String doneBy = "";
 
 
-    // Expect user input with one '/'  as seperator for by
+    // Expect user input with one '/'  as separator for by
     Deadline(String userInput) {
-        userInput = userInput.substring("deadline".length());
+        userInput = userInput.substring(KEYWORD_DEADLINE.length());
         String[] userInputs = userInput.split("/");
         if (userInputs.length != 2) {
             return;
         }
         this.title = userInputs[0];
-        if (userInputs[1].startsWith("by")) {
-            this.doneBy = userInputs[1].substring("by".length());
+        if (userInputs[1].startsWith(KEYWORD_BY)) {
+            this.doneBy = userInputs[1].substring(KEYWORD_BY.length());
         } else {
             this.doneBy = "NA";
         }

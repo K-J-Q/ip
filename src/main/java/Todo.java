@@ -1,6 +1,9 @@
 public class Todo extends Task {
+
+    private static final String KEYWORD_TASK = "task";
+
     Todo(String userInput) {
-        userInput = userInput.substring("task".length());
+        userInput = userInput.substring(KEYWORD_TASK.length());
         this.title = userInput.trim();
     }
 

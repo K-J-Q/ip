@@ -1,10 +1,14 @@
 public class Event extends Task {
+    private static final String KEYWORD_EVENT = "event";
+    private static final String KEYWORD_FROM = "from";
+    private static final String KEYWORD_TO = "to";
+
     String fromDateTime = "";
     String toDateTime = "";
 
     // Expect user input with three '/'  as separator for from and to
     Event(String userInput) {
-        userInput = userInput.substring("event".length());
+        userInput = userInput.substring(KEYWORD_EVENT.length());
         String[] userInputs = userInput.split("/");
 
         if (userInputs.length != 3) {
@@ -13,10 +17,10 @@ public class Event extends Task {
         this.title = userInputs[0];
 
         for (int i = 1; i < 3; i++) {
-            if (userInputs[i].startsWith("from")) {
-                this.fromDateTime = userInputs[i].substring("from".length());
-            } else if (userInputs[i].startsWith("to")) {
-                this.toDateTime = userInputs[i].substring("to".length());
+            if (userInputs[i].startsWith(KEYWORD_FROM)) {
+                this.fromDateTime = userInputs[i].substring(KEYWORD_FROM.length());
+            } else if (userInputs[i].startsWith(KEYWORD_TO)) {
+                this.toDateTime = userInputs[i].substring(KEYWORD_TO.length());
             }
         }
 
