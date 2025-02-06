@@ -33,6 +33,6 @@ public class Event extends Task {
 
     @Override
     public String getTask() {
-        return String.format("[E][%c] %s (by: %s to: %s)", this.isDone ? 'X' : ' ', this.title, this.fromDateTime, this.toDateTime);
+        return String.format("[E][%c] %s (from: %s to: %s)", this.isDone ? 'X' : ' ', this.title, this.fromDateTime, this.toDateTime);
     }
 }
