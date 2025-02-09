@@ -39,20 +39,34 @@ public class Minion {
                 break;
             default:
                 if (userInput.startsWith("todo")) {
-                    messageOut = tasks.addTask(new Todo(userInput));
-                    minionOut.printMessageAndSep(messageOut);
+                    try {
+                        messageOut = tasks.addTask(new Todo(userInput));
+                        minionOut.printMessageAndSep(messageOut);
+                    } catch (IllegalArgumentException e) {
+                        minionOut.printMessageAndSep(e.getMessage());
+                    }
                 } else if (userInput.startsWith("deadline")) {
-                    messageOut = tasks.addTask(new Deadline(userInput));
-                    minionOut.printMessageAndSep(messageOut);
+                    try {
+                        messageOut = tasks.addTask(new Deadline(userInput));
+                        minionOut.printMessageAndSep(messageOut);
+                    } catch (IllegalArgumentException e) {
+                        minionOut.printMessageAndSep(e.getMessage());
+                    }
                 } else if (userInput.startsWith("event")) {
-                    messageOut = tasks.addTask(new Event(userInput));
-                    minionOut.printMessageAndSep(messageOut);
+                    try {
+                        messageOut = tasks.addTask(new Event(userInput));
+                        minionOut.printMessageAndSep(messageOut);
+                    } catch (IllegalArgumentException e) {
+                        minionOut.printMessageAndSep(e.getMessage());
+                    }
                 } else if (userInput.startsWith("mark")) {
                     int taskIndex = Integer.parseInt(userInput.substring("mark".length()).trim()) - 1;
                     minionOut.printMessage(tasks.markDone(taskIndex));
                 } else if (userInput.startsWith("unmark")) {
                     int taskIndex = Integer.parseInt(userInput.substring("unmark".length()).trim()) - 1;
                     minionOut.printMessage(tasks.unmarkDone(taskIndex));
+                } else {
+                    minionOut.printMessageAndSep("OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }
             }
         }

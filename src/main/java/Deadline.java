@@ -3,23 +3,22 @@ public class Deadline extends Task {
     private static final String KEYWORD_BY = "by";
     private String dueDate = "";
 
-
     // Expect user input with one '/'  as separator for by
     Deadline(String userInput) {
         userInput = userInput.substring(KEYWORD_DEADLINE.length());
         String[] userInputs = userInput.split("/");
-        if (userInputs.length != 2) {
-            return;
+        if (userInputs.length != 2 || userInputs[0].trim().isEmpty()) {
+            throw new IllegalArgumentException("Ahhh!!! The deadlines must include (1) description and (2) done by datetime");
         }
-        this.title = userInputs[0];
+        this.title = userInputs[0].trim();
         if (userInputs[1].startsWith(KEYWORD_BY)) {
-            this.dueDate = userInputs[1].substring(KEYWORD_BY.length());
+            this.dueDate = userInputs[1].substring(KEYWORD_BY.length()).trim();
+            if (this.dueDate.isEmpty()) {
+                throw new IllegalArgumentException("Ahhh!!! Deadline is empty");
+            }
         } else {
-            this.dueDate = "NA";
+            throw new IllegalArgumentException("Ahhh!!! I don't understand this: /" + userInputs[1]);
         }
-
-        this.title = this.title.trim();
-        this.dueDate = this.dueDate.trim();
     }
 
     Deadline(String title, String doneBy) {

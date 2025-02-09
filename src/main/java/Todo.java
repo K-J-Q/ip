@@ -5,6 +5,9 @@ public class Todo extends Task {
     Todo(String userInput) {
         userInput = userInput.substring(KEYWORD_TASK.length());
         this.title = userInput.trim();
+        if (this.title.isEmpty()) {
+            throw new IllegalArgumentException("Ahhh!!! Todos must contain (1) description");
+        }
     }
 
     @Override

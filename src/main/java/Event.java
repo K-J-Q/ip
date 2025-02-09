@@ -6,27 +6,31 @@ public class Event extends Task {
     String fromDateTime = "";
     String toDateTime = "";
 
-    // Expect user input with three '/'  as separator for from and to
     Event(String userInput) {
         userInput = userInput.substring(KEYWORD_EVENT.length());
         String[] userInputs = userInput.split("/");
-
-        if (userInputs.length != 3) {
-            return;
+        if (userInputs.length != 3 || userInputs[0].trim().isEmpty()) {
+            throw new IllegalArgumentException("Ahhh!!! The events must include (1) description, (2) from datetime and (3) to datetime");
         }
-        this.title = userInputs[0];
-
+        this.title = userInputs[0].trim();
         for (int i = 1; i < 3; i++) {
             if (userInputs[i].startsWith(KEYWORD_FROM)) {
-                this.fromDateTime = userInputs[i].substring(KEYWORD_FROM.length());
+                this.fromDateTime = userInputs[i].substring(KEYWORD_FROM.length()).trim();
+                if (this.fromDateTime.isEmpty()){
+                    throw new IllegalArgumentException("Ahhh!!! from datetime is empty");
+                }
             } else if (userInputs[i].startsWith(KEYWORD_TO)) {
-                this.toDateTime = userInputs[i].substring(KEYWORD_TO.length());
+                this.toDateTime = userInputs[i].substring(KEYWORD_TO.length()).trim();
+                if(this.toDateTime.isEmpty()) {
+                    throw new IllegalArgumentException("Ahhh!!! to datetime is empty");
+                }
+            } else {
+                throw new IllegalArgumentException("Ahhh!!! I don't understand this: /" + userInputs[i]);
             }
         }
-
-        this.title = this.title.trim();
-        this.fromDateTime = this.fromDateTime.trim();
-        this.toDateTime = this.toDateTime.trim();
+        if (this.fromDateTime.isEmpty() || this.toDateTime.isEmpty()) {
+            throw new IllegalArgumentException("OOPS!!! The event timings are invalid.");
+        }
     }
 
     Event(String title, String fromDateTime, String toDateTime) {

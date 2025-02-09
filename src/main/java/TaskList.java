@@ -8,6 +8,7 @@ public class TaskList {
     }
 
     public String addTask(Task task) {
+
         this.tasks[this.taskIndex] = task;
         this.taskIndex++;
         return String.format("Got it. I've added this task:\n  %s\nNow you have %d task(s) in the list.", task.getTask(), this.taskIndex);
