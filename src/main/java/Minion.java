@@ -4,9 +4,9 @@ public class Minion {
 
     public static void main(String[] args) {
         // Constant variables
-        final String LOGO = "  __  __ _       _             \n"
-                + " |  \\/  (_)_ __ (_) ___  _ __  \n"
-                + " | |\\/| | | '_ \\| |/ _ \\| '_ \\ \n"
+        final String LOGO = "  __  __ _       _\n"
+                + " |  \\/  (_)_ __ (_) ___  _ __\n"
+                + " | |\\/| | | '_ \\| |/ _ \\| '_ \\\n"
                 + " | |  | | | | | | | (_) | | | |\n"
                 + " |_|  |_|_|_| |_|_|\\___/|_| |_|\n";
         final String NAME = "Minion";
