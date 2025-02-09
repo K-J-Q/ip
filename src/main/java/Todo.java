@@ -2,11 +2,11 @@ public class Todo extends Task {
 
     private static final String KEYWORD_TASK = "task";
 
-    Todo(String userInput) {
+    Todo(String userInput) throws MinionException {
         userInput = userInput.substring(KEYWORD_TASK.length());
         this.title = userInput.trim();
         if (this.title.isEmpty()) {
-            throw new IllegalArgumentException("Ahhh!!! Todos must contain (1) description");
+            throw new MinionException("Ahhh!!! Todos must contain (1) description");
         }
     }
 

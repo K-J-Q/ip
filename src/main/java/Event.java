@@ -6,30 +6,30 @@ public class Event extends Task {
     String fromDateTime = "";
     String toDateTime = "";
 
-    Event(String userInput) {
+    Event(String userInput) throws MinionException {
         userInput = userInput.substring(KEYWORD_EVENT.length());
         String[] userInputs = userInput.split("/");
         if (userInputs.length != 3 || userInputs[0].trim().isEmpty()) {
-            throw new IllegalArgumentException("Ahhh!!! The events must include (1) description, (2) from datetime and (3) to datetime");
+            throw new MinionException("Ahhh!!! The events must include (1) description, (2) from datetime and (3) to datetime");
         }
         this.title = userInputs[0].trim();
         for (int i = 1; i < 3; i++) {
             if (userInputs[i].startsWith(KEYWORD_FROM)) {
                 this.fromDateTime = userInputs[i].substring(KEYWORD_FROM.length()).trim();
                 if (this.fromDateTime.isEmpty()){
-                    throw new IllegalArgumentException("Ahhh!!! from datetime is empty");
+                    throw new MinionException("Ahhh!!! from datetime is empty");
                 }
             } else if (userInputs[i].startsWith(KEYWORD_TO)) {
                 this.toDateTime = userInputs[i].substring(KEYWORD_TO.length()).trim();
                 if(this.toDateTime.isEmpty()) {
-                    throw new IllegalArgumentException("Ahhh!!! to datetime is empty");
+                    throw new MinionException("Ahhh!!! to datetime is empty");
                 }
             } else {
-                throw new IllegalArgumentException("Ahhh!!! I don't understand this: /" + userInputs[i]);
+                throw new MinionException("Ahhh!!! I don't understand this: /" + userInputs[i]);
             }
         }
         if (this.fromDateTime.isEmpty() || this.toDateTime.isEmpty()) {
-            throw new IllegalArgumentException("OOPS!!! The event timings are invalid.");
+            throw new MinionException("OOPS!!! The event timings are invalid.");
         }
     }
 

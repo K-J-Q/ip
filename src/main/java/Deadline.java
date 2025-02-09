@@ -4,20 +4,20 @@ public class Deadline extends Task {
     private String dueDate = "";
 
     // Expect user input with one '/'  as separator for by
-    Deadline(String userInput) {
+    Deadline(String userInput) throws MinionException {
         userInput = userInput.substring(KEYWORD_DEADLINE.length());
         String[] userInputs = userInput.split("/");
         if (userInputs.length != 2 || userInputs[0].trim().isEmpty()) {
-            throw new IllegalArgumentException("Ahhh!!! The deadlines must include (1) description and (2) done by datetime");
+            throw new MinionException("Ahhh!!! The deadlines must include (1) description and (2) done by datetime");
         }
         this.title = userInputs[0].trim();
         if (userInputs[1].startsWith(KEYWORD_BY)) {
             this.dueDate = userInputs[1].substring(KEYWORD_BY.length()).trim();
             if (this.dueDate.isEmpty()) {
-                throw new IllegalArgumentException("Ahhh!!! Deadline is empty");
+                throw new MinionException("Ahhh!!! Deadline is empty");
             }
         } else {
-            throw new IllegalArgumentException("Ahhh!!! I don't understand this: /" + userInputs[1]);
+            throw new MinionException("Ahhh!!! I don't understand this: /" + userInputs[1]);
         }
     }
 

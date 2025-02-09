@@ -42,21 +42,21 @@ public class Minion {
                     try {
                         messageOut = tasks.addTask(new Todo(userInput));
                         minionOut.printMessageAndSep(messageOut);
-                    } catch (IllegalArgumentException e) {
+                    } catch (MinionException e) {
                         minionOut.printMessageAndSep(e.getMessage());
                     }
                 } else if (userInput.startsWith("deadline")) {
                     try {
                         messageOut = tasks.addTask(new Deadline(userInput));
                         minionOut.printMessageAndSep(messageOut);
-                    } catch (IllegalArgumentException e) {
+                    } catch (MinionException e) {
                         minionOut.printMessageAndSep(e.getMessage());
                     }
                 } else if (userInput.startsWith("event")) {
                     try {
                         messageOut = tasks.addTask(new Event(userInput));
                         minionOut.printMessageAndSep(messageOut);
-                    } catch (IllegalArgumentException e) {
+                    } catch (MinionException e) {
                         minionOut.printMessageAndSep(e.getMessage());
                     }
                 } else if (userInput.startsWith("mark")) {
