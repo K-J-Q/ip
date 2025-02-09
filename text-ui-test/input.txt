@@ -18,3 +18,22 @@ unmark 3
 unmark 1
 unmark 2
 list
+todo
+deadline
+deadline noBy
+deadline noBy /hi
+deadline noBy /hi fdsf
+event
+event test
+event test /from
+event test /to
+event test /from fds
+event test /to fsadf
+event test /from test /to
+event test /from test /taa
+event test /fdsa test /to
+event test /fds 123  /fsd 21
+
+dfksalf
+blah
+bye
