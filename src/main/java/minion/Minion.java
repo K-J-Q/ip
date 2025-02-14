@@ -1,3 +1,8 @@
+package minion;
+
+import minion.task.*;
+import minion.ui.MessagePrinter;
+
 import java.util.Scanner;
 
 public class Minion {

@@ -1,3 +1,7 @@
+package minion.task;
+
+import minion.MinionException;
+
 public class Event extends Task {
     private static final String KEYWORD_EVENT = "event";
     private static final String KEYWORD_FROM = "from";
@@ -6,7 +10,7 @@ public class Event extends Task {
     String fromDateTime = "";
     String toDateTime = "";
 
-    Event(String userInput) throws MinionException {
+    public Event(String userInput) throws MinionException {
         userInput = userInput.substring(KEYWORD_EVENT.length());
         String[] userInputs = userInput.split("/");
         if (userInputs.length != 3 || userInputs[0].trim().isEmpty()) {

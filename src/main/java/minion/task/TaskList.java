@@ -1,3 +1,5 @@
+package minion.task;
+
 public class TaskList {
     private static final int MAX_TASKS = 100;
     private Task[] tasks = new Task[MAX_TASKS]; // maximum of 100 tasks

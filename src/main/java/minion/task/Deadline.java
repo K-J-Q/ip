@@ -1,10 +1,14 @@
+package minion.task;
+
+import minion.MinionException;
+
 public class Deadline extends Task {
     private static final String KEYWORD_DEADLINE = "deadline";
     private static final String KEYWORD_BY = "by";
     private String dueDate = "";
 
     // Expect user input with one '/'  as separator for by
-    Deadline(String userInput) throws MinionException {
+    public Deadline(String userInput) throws MinionException {
         userInput = userInput.substring(KEYWORD_DEADLINE.length());
         String[] userInputs = userInput.split("/");
         if (userInputs.length != 2 || userInputs[0].trim().isEmpty()) {
