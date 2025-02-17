@@ -1,5 +1,7 @@
 package minion;
 
+import minion.task.Task;
+
 public class Deadline extends Task {
     private static final String KEYWORD_DEADLINE = "deadline";
     private static final String KEYWORD_BY = "by";

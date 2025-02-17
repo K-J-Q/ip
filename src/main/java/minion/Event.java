@@ -1,5 +1,7 @@
 package minion;
 
+import minion.task.Task;
+
 public class Event extends Task {
     private static final String KEYWORD_EVENT = "event";
     private static final String KEYWORD_FROM = "from";
