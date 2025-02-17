@@ -1,8 +1,12 @@
+package minion.task;
+
+import minion.MinionException;
+
 public class Todo extends Task {
 
     private static final String KEYWORD_TASK = "task";
 
-    Todo(String userInput) throws MinionException {
+    public Todo(String userInput) throws MinionException {
         userInput = userInput.substring(KEYWORD_TASK.length());
         this.title = userInput.trim();
         if (this.title.isEmpty()) {

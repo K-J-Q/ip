@@ -1,3 +1,5 @@
+package minion.ui;
+
 public class MessagePrinter {
     private Boolean isNewMessage = true;
     private String indentation = "   ";

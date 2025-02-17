@@ -1,3 +1,5 @@
+package minion.task;
+
 public class Task {
     protected String title = "";
     protected Boolean isDone = false;
