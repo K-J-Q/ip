@@ -103,6 +103,43 @@
    4.[D][ ] return book (by: Sunday)
    5.[E][ ] gaming (from: 5pm to: Mon 11pm)
    ____________________________________________________________
+   Noted. I've removed this task:
+   [ ] read book
+   Now you have 4 task(s) in the list.
+   ____________________________________________________________
+   Here are the tasks in your list:
+   1.[T][ ] borrow book
+   2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+   3.[D][ ] return book (by: Sunday)
+   4.[E][ ] gaming (from: 5pm to: Mon 11pm)
+   ____________________________________________________________
+   Invalid Selection!
+   Noted. I've removed this task:
+   [ ] gaming
+   Now you have 3 task(s) in the list.
+   ____________________________________________________________
+   Here are the tasks in your list:
+   1.[T][ ] borrow book
+   2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+   3.[D][ ] return book (by: Sunday)
+   ____________________________________________________________
+   Noted. I've removed this task:
+   [ ] project meeting
+   Now you have 2 task(s) in the list.
+   ____________________________________________________________
+   Here are the tasks in your list:
+   1.[T][ ] borrow book
+   2.[D][ ] return book (by: Sunday)
+   ____________________________________________________________
+   Noted. I've removed this task:
+   [ ] borrow book
+   Now you have 1 task(s) in the list.
+   Noted. I've removed this task:
+   [ ] return book
+   Now you have 0 task(s) in the list.
+   ____________________________________________________________
+   Here are the tasks in your list:
+   ____________________________________________________________
    ____________________________________________________________
    Ahhh!!! Todos must contain (1) description
    ____________________________________________________________
