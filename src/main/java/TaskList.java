@@ -60,6 +60,6 @@ public class TaskList {
         String taskStr = getTaskString(index);
         this.tasks.remove(index);
 
-        return  "Noted. I've removed this task:\n" + taskStr + "\nNow you have " + this.tasks.size() + " in the list.";
+        return  "Noted. I've removed this task:\n" + taskStr + "\nNow you have " + this.tasks.size() + " task(s) in the list.";
     }
 }
