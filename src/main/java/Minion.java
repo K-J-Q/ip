@@ -65,6 +65,9 @@ public class Minion {
                 } else if (userInput.startsWith("unmark")) {
                     int taskIndex = Integer.parseInt(userInput.substring("unmark".length()).trim()) - 1;
                     minionOut.printMessage(tasks.unmarkDone(taskIndex));
+                }else if (userInput.startsWith("delete")) {
+                    int taskIndex = Integer.parseInt(userInput.substring("delete".length()).trim()) - 1;
+                    minionOut.printMessage(tasks.delete(taskIndex));
                 } else {
                     minionOut.printMessageAndSep("OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }
