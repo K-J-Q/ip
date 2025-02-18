@@ -22,6 +22,12 @@ public class Minion {
         Scanner in = new Scanner(System.in);
         TaskList tasks = new TaskList();
 
+        try {
+            tasks.loadTasks();
+        } catch (MinionException e) {
+            minionOut.printMessageAndSep("Unable to load task from memory!");
+        }
+
 
         // Display logo and messages
         minionOut.printMessageAndSep("Hello from\n" + LOGO);
