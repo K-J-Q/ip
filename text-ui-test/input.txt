@@ -18,6 +18,16 @@ unmark 3
 unmark 1
 unmark 2
 list
+delete 1
+list
+delete 5
+delete 4
+list
+delete 2
+list
+delete 1
+delete 1
+list
 todo
 deadline
 deadline noBy
