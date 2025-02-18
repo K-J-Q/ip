@@ -11,10 +11,9 @@ import java.util.Scanner;
 import java.io.IOException;
 
 public class TaskList {
-    private static final int MAX_TASKS = 100;
     private static final String FILE_PATH = "./taskInfo.txt";
 
-    ArrayList<Task> tasks = new ArrayList<Task>(); // Create an ArrayList object
+    ArrayList<Task> tasks = new ArrayList<>(); // Create an ArrayList object
 
     File f = new File(FILE_PATH);
 
@@ -25,12 +24,11 @@ public class TaskList {
 
 
     private void saveTasks() {
-        FileWriter fw = null;
         try {
-            fw = new FileWriter(FILE_PATH);
+            FileWriter fw = new FileWriter(FILE_PATH);
 
-            for (int i = 0; i < this.taskIndex; i++) {
-                fw.append(this.tasks[i].getSaveString());
+            for (Task task : this.tasks) {
+                fw.append(task.getSaveString());
                 fw.append(System.lineSeparator());
             }
 
@@ -44,18 +42,17 @@ public class TaskList {
         String taskType = task.substring(0, 1);
         switch (taskType) {
         case "T":
-            this.tasks[this.taskIndex] = new Todo(task);
+            this.tasks.add(new Todo(task));
             break;
         case "D":
-            this.tasks[this.taskIndex] = new Deadline(task);
+            this.tasks.add(new Deadline(task));
             break;
         case "E":
-            this.tasks[this.taskIndex] = new Event(task);
+            this.tasks.add(new Event(task));
             break;
         default:
             throw new MinionException("Unable to process task: " + task);
         }
-        this.taskIndex++;
     }
 
     public void loadTasks() throws MinionException {
@@ -89,19 +86,19 @@ public class TaskList {
     }
 
     public String listTasks() {
-        String out = "Here are the tasks in your list:\n";
+        StringBuilder out = new StringBuilder("Here are the tasks in your list:\n");
         int i = 1;
         for (Task task : this.tasks) {
-            out += String.format("%d.%s\n", i++, task.getTask());
+            out.append(String.format("%d.%s\n", i++, task.getTask()));
         }
 
         // if there are tasks, remove trailing new line character
         if (!out.isEmpty()) {
-            out = out.substring(0, out.length() - 1);
+            out = new StringBuilder(out.substring(0, out.length() - 1));
         } else {
-            out = "You don't have any items!";
+            out = new StringBuilder("You don't have any items!");
         }
-        return out;
+        return out.toString();
     }
 
     public String markDone(int index) {
