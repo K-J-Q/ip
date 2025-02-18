@@ -1,6 +1,6 @@
-import java.util.ArrayList;
-
 package minion.task;
+
+import java.util.ArrayList;
 
 public class TaskList {
     ArrayList<Task> tasks = new ArrayList<Task>(); // Create an ArrayList object
@@ -26,7 +26,7 @@ public class TaskList {
     public String listTasks() {
         String out = "Here are the tasks in your list:\n";
         int i = 1;
-        for (Task task : this.tasks){
+        for (Task task : this.tasks) {
             out += String.format("%d.%s\n", i++, task.getTask());
         }
 
@@ -51,7 +51,7 @@ public class TaskList {
         if (!isValidIndex(index)) {
             return "Invalid Selection!";
         }
-        this.tasks[index].setDone(false);
+        this.tasks.get(index).setDone(false);
         return "OK, I've marked this task as not done yet:\n  " + getTaskString(index);
     }
 
@@ -62,6 +62,6 @@ public class TaskList {
         String taskStr = getTaskString(index);
         this.tasks.remove(index);
 
-        return  "Noted. I've removed this task:\n" + taskStr + "\nNow you have " + this.tasks.size() + " task(s) in the list.";
+        return "Noted. I've removed this task:\n" + taskStr + "\nNow you have " + this.tasks.size() + " task(s) in the list.";
     }
 }
