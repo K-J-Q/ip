@@ -3,6 +3,7 @@ package minion.task;
 import minion.MinionException;
 
 public class Event extends Task {
+    private static final String KEYWORD_SAVED_EVENT = "E|";
     private static final String KEYWORD_EVENT = "event";
     private static final String KEYWORD_FROM = "from";
     private static final String KEYWORD_TO = "to";
@@ -10,30 +11,41 @@ public class Event extends Task {
     String fromDateTime = "";
     String toDateTime = "";
 
-    public Event(String userInput) throws MinionException {
-        userInput = userInput.substring(KEYWORD_EVENT.length());
-        String[] userInputs = userInput.split("/");
-        if (userInputs.length != 3 || userInputs[0].trim().isEmpty()) {
-            throw new MinionException("Ahhh!!! The events must include (1) description, (2) from datetime and (3) to datetime");
-        }
-        this.title = userInputs[0].trim();
-        for (int i = 1; i < 3; i++) {
-            if (userInputs[i].startsWith(KEYWORD_FROM)) {
-                this.fromDateTime = userInputs[i].substring(KEYWORD_FROM.length()).trim();
-                if (this.fromDateTime.isEmpty()){
-                    throw new MinionException("Ahhh!!! from datetime is empty");
-                }
-            } else if (userInputs[i].startsWith(KEYWORD_TO)) {
-                this.toDateTime = userInputs[i].substring(KEYWORD_TO.length()).trim();
-                if(this.toDateTime.isEmpty()) {
-                    throw new MinionException("Ahhh!!! to datetime is empty");
-                }
-            } else {
-                throw new MinionException("Ahhh!!! I don't understand this: /" + userInputs[i]);
+    public Event(String input) throws MinionException {
+        if (input.startsWith(KEYWORD_SAVED_EVENT)) {
+            input = input.substring(KEYWORD_SAVED_EVENT.length());
+            String[] inputs = input.split("\\|");
+            this.isDone = inputs[0].trim().equals("1");
+            this.title = inputs[1].trim();
+            this.fromDateTime = inputs[2].trim();
+            this.toDateTime = inputs[3].trim();
+        } else if (input.startsWith(KEYWORD_EVENT)) {
+            input = input.substring(KEYWORD_EVENT.length());
+            String[] userInputs = input.split("/");
+            if (userInputs.length != 3 || userInputs[0].trim().isEmpty()) {
+                throw new MinionException("Ahhh!!! The events must include (1) description, (2) from datetime and (3) to datetime");
             }
-        }
-        if (this.fromDateTime.isEmpty() || this.toDateTime.isEmpty()) {
-            throw new MinionException("OOPS!!! The event timings are invalid.");
+            this.title = userInputs[0].trim();
+            for (int i = 1; i < 3; i++) {
+                if (userInputs[i].startsWith(KEYWORD_FROM)) {
+                    this.fromDateTime = userInputs[i].substring(KEYWORD_FROM.length()).trim();
+                    if (this.fromDateTime.isEmpty()) {
+                        throw new MinionException("Ahhh!!! from datetime is empty");
+                    }
+                } else if (userInputs[i].startsWith(KEYWORD_TO)) {
+                    this.toDateTime = userInputs[i].substring(KEYWORD_TO.length()).trim();
+                    if (this.toDateTime.isEmpty()) {
+                        throw new MinionException("Ahhh!!! to datetime is empty");
+                    }
+                } else {
+                    throw new MinionException("Ahhh!!! I don't understand this: /" + userInputs[i]);
+                }
+            }
+            if (this.fromDateTime.isEmpty() || this.toDateTime.isEmpty()) {
+                throw new MinionException("OOPS!!! The event timings are invalid.");
+            }
+        } else {
+            throw new MinionException("Unknown start pattern.");
         }
     }
 
@@ -46,5 +58,10 @@ public class Event extends Task {
     @Override
     public String getTask() {
         return String.format("[E][%c] %s (from: %s to: %s)", this.isDone ? 'X' : ' ', this.title, this.fromDateTime, this.toDateTime);
+    }
+
+    @Override
+    public String getSaveString() {
+        return super.getSaveString() + String.format("E|%s|%s|%s|%s", this.isDone ? "1" : "0", this.title, this.fromDateTime, this.toDateTime);
     }
 }
