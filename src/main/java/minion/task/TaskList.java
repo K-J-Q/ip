@@ -125,7 +125,7 @@ public class TaskList {
         }
         String taskStr = getTaskString(index);
         this.tasks.remove(index);
-
+        saveTasks();
         return "Noted. I've removed this task:\n" + taskStr + "\nNow you have " + this.tasks.size() + " task(s) in the list.";
     }
 }
