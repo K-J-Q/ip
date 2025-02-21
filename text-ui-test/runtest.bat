@@ -5,6 +5,7 @@ if not exist ..\bin mkdir ..\bin
 
 REM delete output from previous run
 if exist ACTUAL.TXT del ACTUAL.TXT
+if exist taskInfo.txt del taskInfo.txt
 
 REM compile the code into the bin folder (recursive compilation for /minion package)
 dir /s /b ..\src\main\java\minion\*.java > sources.txt
