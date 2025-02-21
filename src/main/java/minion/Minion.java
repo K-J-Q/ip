@@ -1,5 +1,7 @@
 package minion;
 
+import minion.parser.Parser;
+import minion.parser.UserCommand;
 import minion.task.*;
 import minion.ui.MessagePrinter;
 
@@ -9,18 +11,20 @@ public class Minion {
 
     public static void main(String[] args) {
         // Constant variables
-        final String LOGO = "  __  __ _       _\n"
-                + " |  \\/  (_)_ __ (_) ___  _ __\n"
-                + " | |\\/| | | '_ \\| |/ _ \\| '_ \\\n"
-                + " | |  | | | | | | | (_) | | | |\n"
-                + " |_|  |_|_|_| |_|_|\\___/|_| |_|\n";
+        final String LOGO = """
+                  __  __ _       _
+                 |  \\/  (_)_ __ (_) ___  _ __
+                 | |\\/| | | '_ \\| |/ _ \\| '_ \\
+                 | |  | | | | | | | (_) | | | |
+                 |_|  |_|_|_| |_|_|\\___/|_| |_|
+                """;
         final String NAME = "Minion";
-        String userInput;
 
         // Initialise the message inputs and outputs
         MessagePrinter minionOut = new MessagePrinter();
         Scanner in = new Scanner(System.in);
         TaskList tasks = new TaskList();
+        Parser parser = new Parser();
 
         try {
             tasks.loadTasks();
@@ -35,53 +39,16 @@ public class Minion {
         minionOut.printMessageAndSep("What can I do for you?");
 
         Boolean toExit = false;
-        Task newTask;
-        String messageOut;
+        UserCommand userCommand = new UserCommand();
 
         // Keep reading the user's input until exit condition reached
         while (!toExit) {
-            userInput = in.nextLine();
-            switch (userInput) {
-            case "bye":
-                toExit = true;
-                break;
-            case "list":
-                minionOut.printMessageAndSep(tasks.listTasks());
-                break;
-            default:
-                if (userInput.startsWith("todo")) {
-                    try {
-                        messageOut = tasks.addTask(new Todo(userInput));
-                        minionOut.printMessageAndSep(messageOut);
-                    } catch (MinionException e) {
-                        minionOut.printMessageAndSep(e.getMessage());
-                    }
-                } else if (userInput.startsWith("deadline")) {
-                    try {
-                        messageOut = tasks.addTask(new Deadline(userInput));
-                        minionOut.printMessageAndSep(messageOut);
-                    } catch (MinionException e) {
-                        minionOut.printMessageAndSep(e.getMessage());
-                    }
-                } else if (userInput.startsWith("event")) {
-                    try {
-                        messageOut = tasks.addTask(new Event(userInput));
-                        minionOut.printMessageAndSep(messageOut);
-                    } catch (MinionException e) {
-                        minionOut.printMessageAndSep(e.getMessage());
-                    }
-                } else if (userInput.startsWith("mark")) {
-                    int taskIndex = Integer.parseInt(userInput.substring("mark".length()).trim()) - 1;
-                    minionOut.printMessage(tasks.markDone(taskIndex));
-                } else if (userInput.startsWith("unmark")) {
-                    int taskIndex = Integer.parseInt(userInput.substring("unmark".length()).trim()) - 1;
-                    minionOut.printMessage(tasks.unmarkDone(taskIndex));
-                }else if (userInput.startsWith("delete")) {
-                    int taskIndex = Integer.parseInt(userInput.substring("delete".length()).trim()) - 1;
-                    minionOut.printMessage(tasks.delete(taskIndex));
-                } else {
-                    minionOut.printMessageAndSep("OOPS!!! I'm sorry, but I don't know what that means :-(");
-                }
+            userCommand.message = in.nextLine();
+            userCommand.command = parser.parse(userCommand.message);
+            try {
+                toExit = parser.execute(userCommand, tasks, minionOut);
+            } catch (MinionException e) {
+                throw new RuntimeException(e);
             }
         }
 

@@ -1,9 +1,5 @@
 package minion;
 
-import minion.task.Deadline;
-import minion.task.Event;
-import minion.task.Task;
-import minion.task.Todo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
