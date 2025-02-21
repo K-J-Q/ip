@@ -3,6 +3,7 @@ package minion.task;
 import java.util.ArrayList;
 
 import minion.MinionException;
+import minion.Storage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,31 +15,16 @@ public class TaskList {
     private static final String FILE_PATH = "./taskInfo.txt";
 
     ArrayList<Task> tasks = new ArrayList<>(); // Create an ArrayList object
-
-    File f = new File(FILE_PATH);
-
+    Storage taskStorage = new Storage();
 
     private Boolean isValidIndex(int index) {
         return (index >= 0 && index < this.tasks.size());
     }
 
-
-    private void saveTasks() {
-        try {
-            FileWriter fw = new FileWriter(FILE_PATH);
-
-            for (Task task : this.tasks) {
-                fw.append(task.getSaveString());
-                fw.append(System.lineSeparator());
-            }
-
-            fw.close();
-        } catch (IOException e) {
-            System.out.println("Unable to save tasks!");
-        }
-    }
-
     private void loadTask(String task) throws MinionException {
+        if (task.isEmpty()) {
+            return;
+        }
         String taskType = task.substring(0, 1);
         switch (taskType) {
         case "T":
@@ -56,21 +42,24 @@ public class TaskList {
     }
 
     public void loadTasks() throws MinionException {
-        if (!f.exists()) {
-            return;
+        String tasks = taskStorage.getString();
+        for (String task : tasks.split(System.lineSeparator())) {
+            loadTask(task);
         }
-        try {
-            Scanner s = new Scanner(f);
-            while (s.hasNext()) {
-                loadTask(s.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Failed to load file!");
-        }
+
     }
 
-    public String addTask(Task task) {
+    private void saveTasks() {
+        String[] taskStrs = new String[tasks.size()];
+        int i = 0;
+        for (Task task : tasks) {
+            taskStrs[i++] = task.getSaveString();
+        }
+        taskStorage.saveString(taskStrs);
+    }
 
+
+    public String addTask(Task task) {
         this.tasks.add(task);
         saveTasks();
         return String.format("Got it. I've added this task:\n  %s\nNow you have %d task(s) in the list.", task.getTask(), this.tasks.size());
