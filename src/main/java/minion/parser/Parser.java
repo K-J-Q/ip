@@ -7,7 +7,16 @@ import minion.task.TaskList;
 import minion.task.Todo;
 import minion.ui.MessagePrinter;
 
+/**
+ * Parses user commands and executes them.
+ */
 public class Parser {
+    /**
+     * Parses a user command.
+     *
+     * @param cmd The user input text (command) as a string.
+     * @return The parsed command as a class Command
+     */
     public Command parse(String cmd) {
         switch (cmd) {
         case "bye":
@@ -49,6 +58,15 @@ public class Parser {
         }
     }
 
+    /**
+     * Executes a user command.
+     *
+     * @param cmd       The processed user command
+     * @param tasks     The task list.
+     * @param minionOut The message printer.
+     * @return True if the command is to exit, false otherwise.
+     * @throws MinionException If the command cannot be executed.
+     */
     public Boolean execute(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) throws MinionException {
         switch (cmd.command) {
         case BYE:
@@ -182,10 +200,17 @@ public class Parser {
         }
     }
 
+    /**
+     * Gets a saved deadline task.
+     *
+     * @param cmd The parsed user command
+     * @return The saved deadline task.
+     * @throws MinionException If the task cannot be parsed.
+     */
     public Deadline getSavedDeadline(UserCommand cmd) throws MinionException {
         String message = cmd.message;
         String title, dueDate;
-        boolean isDone;
+        Boolean isDone;
         if (message.startsWith(KEYWORD_SAVED_DEADLINE)) {
             message = message.substring(KEYWORD_SAVED_DEADLINE.length());
 
@@ -201,10 +226,17 @@ public class Parser {
         return new Deadline(title, dueDate, isDone);
     }
 
+    /**
+     * Gets a saved todo task.
+     *
+     * @param cmd The parsed user command
+     * @return The saved todo task.
+     * @throws MinionException If the task cannot be parsed.
+     */
     public Todo getSavedTodo(UserCommand cmd) throws MinionException {
         String message = cmd.message;
         String title;
-        boolean isDone;
+        Boolean isDone;
         if (message.startsWith(KEYWORD_SAVED_TODO)) {
             message = message.substring(KEYWORD_SAVED_TODO.length());
             String[] userInputs = message.split("\\|");
@@ -216,6 +248,13 @@ public class Parser {
         return new Todo(title, isDone);
     }
 
+    /**
+     * Gets a saved event task.
+     *
+     * @param cmd The parsed user command
+     * @return The saved event task.
+     * @throws MinionException If the task cannot be parsed.
+     */
     public Event getSavedEvent(UserCommand cmd) throws MinionException {
         String message = cmd.message;
         String title, fromDateTime, toDateTime;
@@ -253,6 +292,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a saved task command.
+     *
+     * @param cmd The saved task command as a string.
+     * @return The parsed command.
+     */
     public Command parseSaved(String cmd) {
         return getSavedTaskCommand(cmd);
     }
