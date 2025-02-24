@@ -50,16 +50,14 @@ Search for tasks that contain a specific keyword.
 - `find book`
 
 ## Command Summary
-| Command | Format |
-| ------- | ------ |
-| Add Todo | `todo TASK_DESCRIPTION` |
-| Add Deadline | `deadline TASK_DESCRIPTION /by DATE_OR_STRING` |
-| Add Event | `event TASK_DESCRIPTION /from START_DATE_OR_STRING /to END_DATE_OR_STRING` |
-| List Tasks | `list` |
-| Mark Task | `mark INDEX` |
-| Unmark Task | `unmark INDEX` |
-| Delete Task | `delete INDEX` |
-| Search Tasks | `find KEYWORD` |
+- **Add Todo**: `todo TASK_DESCRIPTION`
+- **Add Deadline**: `deadline TASK_DESCRIPTION /by DATE_OR_STRING`
+- **Add Event**: `event TASK_DESCRIPTION /from START_DATE_OR_STRING /to END_DATE_OR_STRING`
+- **List Tasks**: `list`
+- **Mark Task**: `mark INDEX`
+- **Unmark Task**: `unmark INDEX`
+- **Delete Task**: `delete INDEX`
+- **Search Tasks**: `find KEYWORD`
 
 ## Examples
 ### Adding a Todo
