@@ -1,7 +1,15 @@
 package minion.ui;
 
 public class MessagePrinter {
-    private Boolean isNewMessage = true;
+    // Constant variables
+    final String LOGO = """
+              __  __ _       _
+             |  \\/  (_)_ __ (_) ___  _ __
+             | |\\/| | | '_ \\| |/ _ \\| '_ \\
+             | |  | | | | | | | (_) | | | |
+             |_|  |_|_|_| |_|_|\\___/|_| |_|
+            """;
+    final String NAME = "Minion";
     private String indentation = "   ";
     private String lineSeparator = "____________________________________________________________";
 
@@ -24,5 +32,11 @@ public class MessagePrinter {
         this.printSep();
         this.printMessage(message);
         this.printSep();
+    }
+
+    public void printIntro() {
+        this.printMessageAndSep("Hello from\n" + LOGO);
+        this.printMessage("Hello! I'm [" + NAME + "]");
+        this.printMessageAndSep("What can I do for you?");
     }
 }

@@ -2,7 +2,7 @@ package minion;
 
 import minion.parser.Parser;
 import minion.parser.UserCommand;
-import minion.task.*;
+import minion.task.TaskList;
 import minion.ui.MessagePrinter;
 
 import java.util.Scanner;
@@ -10,15 +10,6 @@ import java.util.Scanner;
 public class Minion {
 
     public static void main(String[] args) {
-        // Constant variables
-        final String LOGO = """
-                  __  __ _       _
-                 |  \\/  (_)_ __ (_) ___  _ __
-                 | |\\/| | | '_ \\| |/ _ \\| '_ \\
-                 | |  | | | | | | | (_) | | | |
-                 |_|  |_|_|_| |_|_|\\___/|_| |_|
-                """;
-        final String NAME = "Minion";
 
         // Initialise the message inputs and outputs
         MessagePrinter minionOut = new MessagePrinter();
@@ -27,26 +18,21 @@ public class Minion {
         Parser parser = new Parser();
 
         try {
-            tasks.loadTasks();
+            tasks.loadTasks(parser);
         } catch (MinionException e) {
             minionOut.printMessageAndSep("Unable to load task from memory!");
         }
 
-
-        // Display logo and messages
-        minionOut.printMessageAndSep("Hello from\n" + LOGO);
-        minionOut.printMessage("Hello! I'm [" + NAME + "]");
-        minionOut.printMessageAndSep("What can I do for you?");
-
-        Boolean toExit = false;
+        Boolean isExiting = false;
         UserCommand userCommand = new UserCommand();
 
+        minionOut.printIntro();
         // Keep reading the user's input until exit condition reached
-        while (!toExit) {
+        while (!isExiting) {
             userCommand.message = in.nextLine();
             userCommand.command = parser.parse(userCommand.message);
             try {
-                toExit = parser.execute(userCommand, tasks, minionOut);
+                isExiting = parser.execute(userCommand, tasks, minionOut);
             } catch (MinionException e) {
                 throw new RuntimeException(e);
             }

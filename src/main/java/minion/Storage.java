@@ -8,8 +8,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Storage {
-    File f = new File(FILE_PATH);
     private static final String FILE_PATH = "./taskInfo.txt";
+    
+    File f = new File(FILE_PATH);
 
     public void saveString(String[] tasks) {
         try {
