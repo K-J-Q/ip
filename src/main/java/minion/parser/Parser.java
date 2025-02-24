@@ -15,67 +15,64 @@ public class Parser {
         case "list":
             return (Command.LIST_TASK);
         default:
-            if (cmd.startsWith("mark")) {
-                return (Command.TASK_MARK);
-            } else if (cmd.startsWith("unmark")) {
-                return (Command.TASK_UNMARK);
-            } else if (cmd.startsWith("delete")) {
-                return (Command.DELETE_TASK);
-            } else if (cmd.startsWith("todo")) {
-                return Command.ADD_TODO;
-            } else if (cmd.startsWith("deadline")) {
-                return Command.ADD_DEADLINE;
-            } else if (cmd.startsWith("event")) {
-                return Command.ADD_EVENT;
-            } else {
-                return Command.UNKNOWN;
-            }
+            return getTaskCommand(cmd);
+        }
+    }
+
+    private static Command getTaskCommand(String cmd) {
+        if (cmd.startsWith("mark")) {
+            return (Command.TASK_MARK);
+        } else if (cmd.startsWith("unmark")) {
+            return (Command.TASK_UNMARK);
+        } else if (cmd.startsWith("delete")) {
+            return (Command.DELETE_TASK);
+        } else if (cmd.startsWith("todo")) {
+            return Command.ADD_TODO;
+        } else if (cmd.startsWith("deadline")) {
+            return Command.ADD_DEADLINE;
+        } else if (cmd.startsWith("event")) {
+            return Command.ADD_EVENT;
+        } else {
+            return Command.UNKNOWN;
+        }
+    }
+
+    private static Command getSavedTaskCommand(String cmd) {
+        if (cmd.startsWith("T")) {
+            return Command.ADD_TODO;
+        } else if (cmd.startsWith("D")) {
+            return Command.ADD_DEADLINE;
+        } else if (cmd.startsWith("E")) {
+            return Command.ADD_EVENT;
+        } else {
+            return Command.UNKNOWN;
         }
     }
 
     public Boolean execute(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) throws MinionException {
-        String messageOut;
         switch (cmd.command) {
         case BYE:
             return true;
         case LIST_TASK:
-            minionOut.printMessageAndSep(tasks.listTasks());
+            listTask(tasks, minionOut);
             return false;
         case ADD_TODO:
-            try {
-                messageOut = tasks.addTask(new Todo(cmd.message));
-                minionOut.printMessageAndSep(messageOut);
-            } catch (MinionException e) {
-                minionOut.printMessageAndSep(e.getMessage());
-            }
+            addTodo(cmd, tasks, minionOut);
             return false;
         case ADD_DEADLINE:
-            try {
-                messageOut = tasks.addTask(new Deadline(cmd.message));
-                minionOut.printMessageAndSep(messageOut);
-            } catch (MinionException e) {
-                minionOut.printMessageAndSep(e.getMessage());
-            }
+            addDeadline(cmd, tasks, minionOut);
             return false;
         case ADD_EVENT:
-            try {
-                messageOut = tasks.addTask(new Event(cmd.message));
-                minionOut.printMessageAndSep(messageOut);
-            } catch (MinionException e) {
-                minionOut.printMessageAndSep(e.getMessage());
-            }
+            addEvent(cmd, tasks, minionOut);
             return false;
         case TASK_MARK:
-            int markIndex = Integer.parseInt(cmd.message.substring("mark".length()).trim()) - 1;
-            minionOut.printMessage(tasks.markDone(markIndex));
+            markTask(cmd, tasks, minionOut);
             return false;
         case TASK_UNMARK:
-            int unmarkIndex = Integer.parseInt(cmd.message.substring("unmark".length()).trim()) - 1;
-            minionOut.printMessage(tasks.unmarkDone(unmarkIndex));
+            unmarkTask(cmd, tasks, minionOut);
             return false;
         case DELETE_TASK:
-            int deleteIndex = Integer.parseInt(cmd.message.substring("delete".length()).trim()) - 1;
-            minionOut.printMessage(tasks.delete(deleteIndex));
+            deleteTask(cmd, tasks, minionOut);
             return false;
         case UNKNOWN:
             minionOut.printMessageAndSep("OOPS!!! I'm sorry, but I don't know what that means :-(");
@@ -83,5 +80,180 @@ public class Parser {
         default:
             throw new MinionException("Keyword not caught!");
         }
+    }
+
+    private static void listTask(TaskList tasks, MessagePrinter minionOut) {
+        minionOut.printMessageAndSep(tasks.listTasks());
+    }
+
+    private static void deleteTask(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
+        int deleteIndex = Integer.parseInt(cmd.message.substring("delete".length()).trim()) - 1;
+        minionOut.printMessage(tasks.delete(deleteIndex));
+    }
+
+    private static void unmarkTask(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
+        int unmarkIndex = Integer.parseInt(cmd.message.substring("unmark".length()).trim()) - 1;
+        minionOut.printMessage(tasks.unmarkDone(unmarkIndex));
+    }
+
+    private static void markTask(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
+        int markIndex = Integer.parseInt(cmd.message.substring("mark".length()).trim()) - 1;
+        minionOut.printMessage(tasks.markDone(markIndex));
+    }
+
+    private static final String KEYWORD_SAVED_TODO = "T|";
+    private static final String KEYWORD_TODO = "todo";
+    private static final String KEYWORD_SAVED_EVENT = "E|";
+    private static final String KEYWORD_EVENT = "event";
+    private static final String KEYWORD_FROM = "from";
+    private static final String KEYWORD_TO = "to";
+
+    private static void addEvent(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
+        String messageOut;
+        String message = cmd.message;
+        String title, fromDateTime = "", toDateTime = "";
+        try {
+            if (message.startsWith(KEYWORD_EVENT)) {
+                message = message.substring(KEYWORD_EVENT.length());
+                String[] userInputs = message.split("/");
+                if (userInputs.length != 3 || userInputs[0].trim().isEmpty()) {
+                    throw new MinionException("Ahhh!!! The events must include (1) description, (2) from datetime and (3) to datetime");
+                }
+                title = userInputs[0].trim();
+                for (int i = 1; i < 3; i++) {
+                    if (userInputs[i].startsWith(KEYWORD_FROM)) {
+                        fromDateTime = userInputs[i].substring(KEYWORD_FROM.length()).trim();
+                        if (fromDateTime.isEmpty()) {
+                            throw new MinionException("Ahhh!!! from datetime is empty");
+                        }
+                    } else if (userInputs[i].startsWith(KEYWORD_TO)) {
+                        toDateTime = userInputs[i].substring(KEYWORD_TO.length()).trim();
+                        if (toDateTime.isEmpty()) {
+                            throw new MinionException("Ahhh!!! to datetime is empty");
+                        }
+                    } else {
+                        throw new MinionException("Ahhh!!! I don't understand this: /" + userInputs[i]);
+                    }
+                }
+                if (fromDateTime.isEmpty() || toDateTime.isEmpty()) {
+                    throw new MinionException("OOPS!!! The event timings are invalid.");
+                }
+            } else {
+                throw new MinionException("Unknown start pattern.");
+            }
+            messageOut = tasks.addTask(new Event(title, fromDateTime, toDateTime));
+            minionOut.printMessageAndSep(messageOut);
+        } catch (MinionException e) {
+            minionOut.printMessageAndSep(e.getMessage());
+        }
+    }
+
+    private static final String KEYWORD_SAVED_DEADLINE = "D|";
+    private static final String KEYWORD_DEADLINE = "deadline";
+    private static final String KEYWORD_BY = "by";
+
+    private static void addDeadline(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
+        String messageOut;
+        String message = cmd.message;
+        String title, dueDate;
+        try {
+            if (message.startsWith(KEYWORD_DEADLINE)) {
+                message = message.substring(KEYWORD_DEADLINE.length());
+                String[] userInputs = message.split("/");
+                if (userInputs.length != 2 || userInputs[0].trim().isEmpty()) {
+                    throw new MinionException("Ahhh!!! The deadlines must include (1) description and (2) done by datetime");
+                }
+                title = userInputs[0].trim();
+                if (userInputs[1].startsWith(KEYWORD_BY)) {
+                    dueDate = userInputs[1].substring(KEYWORD_BY.length()).trim();
+                    if (dueDate.isEmpty()) {
+                        throw new MinionException("Ahhh!!! Deadline is empty");
+                    }
+                } else {
+                    throw new MinionException("Ahhh!!! I don't understand this: /" + userInputs[1]);
+                }
+            } else {
+                throw new MinionException("Unknown start pattern.");
+            }
+            messageOut = tasks.addTask(new Deadline(title, dueDate));
+            minionOut.printMessageAndSep(messageOut);
+        } catch (MinionException e) {
+            minionOut.printMessageAndSep(e.getMessage());
+        }
+    }
+
+    public Deadline getSavedDeadline(UserCommand cmd) throws MinionException {
+        String message = cmd.message;
+        String title, dueDate;
+        boolean isDone;
+        if (message.startsWith(KEYWORD_SAVED_DEADLINE)) {
+            message = message.substring(KEYWORD_SAVED_DEADLINE.length());
+
+
+            String[] userInputs = message.split("\\|");
+
+            title = userInputs[1].trim();
+            dueDate = userInputs[2].trim();
+            isDone = userInputs[0].trim().equals("1");
+        } else {
+            throw new MinionException("Unknown start pattern.");
+        }
+        return new Deadline(title, dueDate, isDone);
+    }
+
+    public Todo getSavedTodo(UserCommand cmd) throws MinionException {
+        String message = cmd.message;
+        String title;
+        boolean isDone;
+        if (message.startsWith(KEYWORD_SAVED_TODO)) {
+            message = message.substring(KEYWORD_SAVED_TODO.length());
+            String[] userInputs = message.split("\\|");
+            isDone = userInputs[0].trim().equals("1");
+            title = userInputs[1].trim();
+        } else {
+            throw new MinionException("Unknown start pattern.");
+        }
+        return new Todo(title, isDone);
+    }
+
+    public Event getSavedEvent(UserCommand cmd) throws MinionException {
+        String message = cmd.message;
+        String title, fromDateTime, toDateTime;
+        boolean isDone;
+        if (message.startsWith(KEYWORD_SAVED_EVENT)) {
+            message = message.substring(KEYWORD_SAVED_EVENT.length());
+            String[] inputs = message.split("\\|");
+            isDone = inputs[0].trim().equals("1");
+            title = inputs[1].trim();
+            fromDateTime = inputs[2].trim();
+            toDateTime = inputs[3].trim();
+        } else {
+            throw new MinionException("Unknown start pattern.");
+        }
+        return new Event(title, fromDateTime, toDateTime, isDone);
+    }
+
+    private static void addTodo(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
+        String messageOut;
+        String message = cmd.message;
+        String title;
+        try {
+            if (message.startsWith(KEYWORD_TODO)) {
+                title = message.substring(KEYWORD_TODO.length()).trim();
+                if (title.isEmpty()) {
+                    throw new MinionException("Ahhh!!! Todos must contain (1) description");
+                }
+            } else {
+                throw new MinionException("Unknown start pattern.");
+            }
+            messageOut = tasks.addTask(new Todo(title));
+            minionOut.printMessageAndSep(messageOut);
+        } catch (MinionException e) {
+            minionOut.printMessageAndSep(e.getMessage());
+        }
+    }
+
+    public Command parseSaved(String cmd) {
+        return getSavedTaskCommand(cmd);
     }
 }

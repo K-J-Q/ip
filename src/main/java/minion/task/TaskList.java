@@ -4,12 +4,9 @@ import java.util.ArrayList;
 
 import minion.MinionException;
 import minion.Storage;
+import minion.parser.Parser;
+import minion.parser.UserCommand;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.util.Scanner;
-import java.io.IOException;
 
 public class TaskList {
     private static final String FILE_PATH = "./taskInfo.txt";
@@ -21,30 +18,34 @@ public class TaskList {
         return (index >= 0 && index < this.tasks.size());
     }
 
-    private void loadTask(String task) throws MinionException {
+    private void loadSavedTask(String task, Parser parser) throws MinionException {
         if (task.isEmpty()) {
             return;
         }
-        String taskType = task.substring(0, 1);
-        switch (taskType) {
-        case "T":
-            this.tasks.add(new Todo(task));
+        UserCommand cmd = new UserCommand();
+        cmd.command = parser.parseSaved(task);
+        ;
+        cmd.message = task;
+
+        switch (cmd.command) {
+        case ADD_TODO:
+            this.tasks.add(parser.getSavedTodo(cmd));
             break;
-        case "D":
-            this.tasks.add(new Deadline(task));
+        case ADD_DEADLINE:
+            this.tasks.add(parser.getSavedDeadline(cmd));
             break;
-        case "E":
-            this.tasks.add(new Event(task));
+        case ADD_EVENT:
+            this.tasks.add(parser.getSavedEvent(cmd));
             break;
         default:
             throw new MinionException("Unable to process task: " + task);
         }
     }
 
-    public void loadTasks() throws MinionException {
+    public void loadTasks(Parser parser) throws MinionException {
         String tasks = taskStorage.getString();
         for (String task : tasks.split(System.lineSeparator())) {
-            loadTask(task);
+            loadSavedTask(task, parser);
         }
 
     }
