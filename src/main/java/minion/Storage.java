@@ -34,8 +34,8 @@ public class Storage {
         }
         try {
             Scanner s = new Scanner(f);
-            while (s.hasNext()) {
-                tasks.append(s.next());
+            while (s.hasNextLine()) {
+                tasks.append(s.nextLine());
                 tasks.append(System.lineSeparator());
             }
         } catch (FileNotFoundException e) {

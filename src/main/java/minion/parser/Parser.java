@@ -8,6 +8,20 @@ import minion.task.Todo;
 import minion.ui.MessagePrinter;
 
 public class Parser {
+
+    private static final String KEYWORD_SAVED_TODO = "T|";
+    private static final String KEYWORD_TODO = "todo";
+    private static final String KEYWORD_SAVED_EVENT = "E|";
+    private static final String KEYWORD_EVENT = "event";
+    private static final String KEYWORD_FROM = "from";
+    private static final String KEYWORD_TO = "to";
+    private static final String KEYWORD_SAVED_DEADLINE = "D|";
+    private static final String KEYWORD_DEADLINE = "deadline";
+    private static final String KEYWORD_BY = "by";
+
+    private static final String KEYWORD_FIND = "find";
+
+
     public Command parse(String cmd) {
         switch (cmd) {
         case "bye":
@@ -32,6 +46,8 @@ public class Parser {
             return Command.ADD_DEADLINE;
         } else if (cmd.startsWith("event")) {
             return Command.ADD_EVENT;
+        } else if (cmd.startsWith("find")) {
+            return (Command.TASK_FIND);
         } else {
             return Command.UNKNOWN;
         }
@@ -74,12 +90,23 @@ public class Parser {
         case DELETE_TASK:
             deleteTask(cmd, tasks, minionOut);
             return false;
+        case TASK_FIND:
+            findTask(cmd, tasks, minionOut);
+            return false;
         case UNKNOWN:
             minionOut.printMessageAndSep("OOPS!!! I'm sorry, but I don't know what that means :-(");
             return false;
         default:
             throw new MinionException("Keyword not caught!");
         }
+    }
+
+    private void findTask(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
+        String messageOut = "Here are the matching tasks in your list:" + System.lineSeparator();
+        String findText = cmd.message.substring(KEYWORD_FIND.length()).trim();
+        messageOut += tasks.findTitle(findText);
+
+        minionOut.printMessageAndSep(messageOut);
     }
 
     private static void listTask(TaskList tasks, MessagePrinter minionOut) {
@@ -101,12 +128,6 @@ public class Parser {
         minionOut.printMessage(tasks.markDone(markIndex));
     }
 
-    private static final String KEYWORD_SAVED_TODO = "T|";
-    private static final String KEYWORD_TODO = "todo";
-    private static final String KEYWORD_SAVED_EVENT = "E|";
-    private static final String KEYWORD_EVENT = "event";
-    private static final String KEYWORD_FROM = "from";
-    private static final String KEYWORD_TO = "to";
 
     private static void addEvent(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
         String messageOut;
@@ -148,9 +169,6 @@ public class Parser {
         }
     }
 
-    private static final String KEYWORD_SAVED_DEADLINE = "D|";
-    private static final String KEYWORD_DEADLINE = "deadline";
-    private static final String KEYWORD_BY = "by";
 
     private static void addDeadline(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
         String messageOut;

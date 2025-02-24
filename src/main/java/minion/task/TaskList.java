@@ -9,8 +9,6 @@ import minion.parser.UserCommand;
 
 
 public class TaskList {
-    private static final String FILE_PATH = "./taskInfo.txt";
-
     ArrayList<Task> tasks = new ArrayList<>(); // Create an ArrayList object
     Storage taskStorage = new Storage();
 
@@ -24,7 +22,6 @@ public class TaskList {
         }
         UserCommand cmd = new UserCommand();
         cmd.command = parser.parseSaved(task);
-        ;
         cmd.message = task;
 
         switch (cmd.command) {
@@ -47,7 +44,6 @@ public class TaskList {
         for (String task : tasks.split(System.lineSeparator())) {
             loadSavedTask(task, parser);
         }
-
     }
 
     private void saveTasks() {
@@ -58,7 +54,6 @@ public class TaskList {
         }
         taskStorage.saveString(taskStrs);
     }
-
 
     public String addTask(Task task) {
         this.tasks.add(task);
@@ -117,5 +112,16 @@ public class TaskList {
         this.tasks.remove(index);
         saveTasks();
         return "Noted. I've removed this task:\n" + taskStr + "\nNow you have " + this.tasks.size() + " task(s) in the list.";
+    }
+
+    public String findTitle(String findText) {
+        StringBuilder out = new StringBuilder();
+        int i = 1;
+        for (Task task : this.tasks) {
+            if (task.getTitle().contains(findText)) {
+                out.append(String.format("%d.%s %s", i++, task.getTask(), System.lineSeparator()));
+            }
+        }
+        return out.toString();
     }
 }
