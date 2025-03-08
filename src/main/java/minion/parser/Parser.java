@@ -132,18 +132,30 @@ public class Parser {
     }
 
     private static void deleteTask(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
-        int deleteIndex = Integer.parseInt(cmd.message.substring("delete".length()).trim()) - 1;
-        minionOut.printMessage(tasks.delete(deleteIndex));
+        try {
+            int deleteIndex = Integer.parseInt(cmd.message.substring("delete".length()).trim()) - 1;
+            minionOut.printMessage(tasks.delete(deleteIndex));
+        } catch (NumberFormatException e) {
+            minionOut.printMessage("I don't see a number here....");
+        }
     }
 
     private static void unmarkTask(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
-        int unmarkIndex = Integer.parseInt(cmd.message.substring("unmark".length()).trim()) - 1;
-        minionOut.printMessage(tasks.unmarkDone(unmarkIndex));
+        try {
+            int unmarkIndex = Integer.parseInt(cmd.message.substring("unmark".length()).trim()) - 1;
+            minionOut.printMessage(tasks.unmarkDone(unmarkIndex));
+        } catch (NumberFormatException e) {
+            minionOut.printMessage("I don't see a number here....");
+        }
     }
 
     private static void markTask(UserCommand cmd, TaskList tasks, MessagePrinter minionOut) {
-        int markIndex = Integer.parseInt(cmd.message.substring("mark".length()).trim()) - 1;
-        minionOut.printMessage(tasks.markDone(markIndex));
+        try {
+            int markIndex = Integer.parseInt(cmd.message.substring("mark".length()).trim()) - 1;
+            minionOut.printMessage(tasks.markDone(markIndex));
+        } catch (NumberFormatException e) {
+            minionOut.printMessage("I don't see a number here....");
+        }
     }
 
 
